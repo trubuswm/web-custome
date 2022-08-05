@@ -1,6 +1,6 @@
 - hosts: allserver 
   vars:
-          image: trubus/web-custome
+    image: trubus/web-custome
   tasks:
     - name: install docker-py di ubuntu 
       apt: 
