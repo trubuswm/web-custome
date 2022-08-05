@@ -1,0 +1,35 @@
+- hosts: allserver 
+  vars:
+          image: trubus/web-custome:v2.0 
+  tasks:
+    - name: install docker-py di ubuntu 
+      apt: 
+       name: "{{ item }}"
+       state: present
+      loop:
+        - python3
+        - python3-docker 
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: install docker-py di cenots
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release       
+        - python3
+        - python3-docker
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: running container 
+      docker_container:
+          name: docker-ansible
+          image: "{{ image }}"
+          published_ports:
+             - 10000:80 
+          recreate: yes
+          state: started
+          restart_policy: always
+          pull: yes 
+
+
